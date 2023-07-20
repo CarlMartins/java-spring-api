@@ -32,7 +32,7 @@ public class CarroService {
         return CarroDto.create(rep.save(carro));
     }
 
-    public void update(Carro carro, Long id) {
+    public CarroDto update(Carro carro, Long id) {
         Assert.notNull(id, "Não foi possível atualizar o registro");
 
         Optional<Carro> c = rep.findById(id);
@@ -46,15 +46,18 @@ public class CarroService {
         db.setTipo(carro.getTipo());
 
         rep.save(db);
+
+        return CarroDto.create(db);
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         Optional<CarroDto> carro = getCarroById(id);
 
         if (carro.isEmpty()){
-            throw new RuntimeException("Não foi possível deletar o registro");
+            return false;
         }
 
         rep.deleteById(id);
+        return true;
     }
 }
