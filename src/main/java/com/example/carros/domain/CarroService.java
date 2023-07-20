@@ -1,5 +1,6 @@
 package com.example.carros.domain;
 
+import com.example.carros.domain.dto.CarroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -13,16 +14,16 @@ public class CarroService {
     @Autowired
     private CarroRepository rep;
 
-    public Iterable<Carro> getCarros() {
-        return rep.findAll();
+    public List<CarroDto> getCarros() {
+        return rep.findAll().stream().map(CarroDto::new).toList();
     }
 
-    public Optional<Carro> getCarroById(Long id) {
-        return rep.findById(id);
+    public Optional<CarroDto> getCarroById(Long id) {
+        return rep.findById(id).map(CarroDto::new);
     }
 
-    public List<Carro> GetCarrosByTipo(String tipo) {
-        return rep.findByTipo(tipo);
+    public List<CarroDto> GetCarrosByTipo(String tipo) {
+        return rep.findByTipo(tipo).stream().map(CarroDto::new).toList();
     }
 
     public void save(Carro carro) {
@@ -32,7 +33,7 @@ public class CarroService {
     public void update(Carro carro, Long id) {
         Assert.notNull(id, "Não foi possível atualizar o registro");
 
-        Optional<Carro> c = getCarroById(id);
+        Optional<Carro> c = rep.findById(id);
 
         if (c.isEmpty()){
             throw new RuntimeException("Não foi possível atualizar o registro");
@@ -46,7 +47,7 @@ public class CarroService {
     }
 
     public void delete(Long id) {
-        Optional<Carro> carro = getCarroById(id);
+        Optional<CarroDto> carro = getCarroById(id);
 
         if (carro.isEmpty()){
             throw new RuntimeException("Não foi possível deletar o registro");
