@@ -15,15 +15,15 @@ public class CarroService {
     private CarroRepository rep;
 
     public List<CarroDto> getCarros() {
-        return rep.findAll().stream().map(CarroDto::new).toList();
+        return rep.findAll().stream().map(CarroDto::create).toList();
     }
 
     public Optional<CarroDto> getCarroById(Long id) {
-        return rep.findById(id).map(CarroDto::new);
+        return rep.findById(id).map(CarroDto::create);
     }
 
     public List<CarroDto> GetCarrosByTipo(String tipo) {
-        return rep.findByTipo(tipo).stream().map(CarroDto::new).toList();
+        return rep.findByTipo(tipo).stream().map(CarroDto::create).toList();
     }
 
     public void save(Carro carro) {
@@ -35,7 +35,7 @@ public class CarroService {
 
         Optional<Carro> c = rep.findById(id);
 
-        if (c.isEmpty()){
+        if (c.isEmpty()) {
             throw new RuntimeException("Não foi possível atualizar o registro");
         }
 
