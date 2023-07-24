@@ -1,5 +1,7 @@
 package com.example.carros.api.security;
 
+import com.example.carros.domain.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,27 +11,17 @@ import org.springframework.stereotype.Service;
 
 @Service(value = "userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        com.example.carros.domain.User user = userRepository.findByLogin(username);
 
-        if (username.equals("user")) {
-            return User
-                    .withUsername(username)
-                    .password("user")
-                    .roles("USER")
-                    .passwordEncoder(encoder::encode)
-                    .build();
-
-        } else if (username.equals("admin")) {
-            return User
-                    .withUsername(username)
-                    .password("admin")
-                    .roles("USER", "ADMIN")
-                    .passwordEncoder(encoder::encode)
-                    .build();
+        if(user == null) {
+            throw new UsernameNotFoundException("login not found");
         }
 
-        throw new UsernameNotFoundException("User not found");
+        return User.withUsername(username).password(user.getSenha()).roles("USER").build();
     }
 }
