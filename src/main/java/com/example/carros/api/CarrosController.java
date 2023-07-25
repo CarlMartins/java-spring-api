@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/carros")
@@ -26,8 +27,8 @@ public class CarrosController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CarroDto> get(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails user) {
-        CarroDto carro = service.getCarroById(id);
+    public ResponseEntity<Optional<CarroDto>> get(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails user) {
+        Optional<CarroDto> carro = service.getCarroById(id);
 
         return ResponseEntity.ok(carro);
     }

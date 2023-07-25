@@ -19,10 +19,10 @@ public class CarroService {
         return rep.findAll().stream().map(CarroDto::create).toList();
     }
 
-    public CarroDto getCarroById(Long id) {
-        return rep.findById(id)
+    public Optional<CarroDto> getCarroById(Long id) {
+        return Optional.ofNullable(rep.findById(id)
                 .map(CarroDto::create)
-                .orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
+                .orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado")));
     }
 
     public List<CarroDto> GetCarrosByTipo(String tipo) {
