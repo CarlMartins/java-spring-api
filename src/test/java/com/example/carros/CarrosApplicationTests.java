@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,7 +25,7 @@ class CarrosApplicationTests {
     }
 
     @Test
-    void CadastrarCarro_Deve_RetornarSucesso() {
+    void CadastrarEExcluirCarroCarro_Deve_RetornarSucessoEExcecao() {
         Carro carro = new Carro();
         carro.setNome("Ferrari");
         carro.setTipo("esportivos");
@@ -48,4 +49,29 @@ class CarrosApplicationTests {
         assertThrows(ObjectNotFoundException.class, () -> service.getCarroById(id));
     }
 
+    @Test
+    void RecuperaListaDeCarros_Deve_RetornarSucesso() {
+        List<CarroDto> carros = service.getCarros();
+
+        Assert.notEmpty(carros, "A lista não pode ser vazia");
+        Assert.isTrue(carros.size() == 30, "A lista deve conter 30 carros");
+    }
+
+    @Test
+    void RecuperaCarroId11_Deve_RetornarSucesso() {
+        Optional<CarroDto> op = service.getCarroById(11L);
+
+        Assert.isTrue(op.isPresent(), "O carro não foi encontrado");
+
+        CarroDto c = op.get();
+
+        Assert.isTrue(c.getNome().equals("Ferrari FF"), "O nome do carro não é igual ao esperado");
+    }
+
+    @Test
+    void RecuperarCarrosPorTipo_Deve_RetornarSucesso() {
+        Assert.isTrue(service.GetCarrosByTipo("classicos").size() == 10, "A lista deve conter 10 carros do tipo clássicos");
+        Assert.isTrue(service.GetCarrosByTipo("esportivos").size() == 10, "A lista deve conter 10 carros do tipo esportivos");
+        Assert.isTrue(service.GetCarrosByTipo("luxo").size() == 10, "A lista deve conter 10 carros do tipo luxo");
+    }
 }

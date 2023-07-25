@@ -1,9 +1,6 @@
 package com.example.carros.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -15,4 +12,13 @@ public class Carro {
     private Long id;
     private String nome;
     private String tipo;
+    private String descricao;
+
+    @Column(name = "url_foto")
+    private String urlFoto;
+
+    @Column(name = "url_video")
+    private String urlVideo;
+    private String latitude;
+    private String longitude;
 }
