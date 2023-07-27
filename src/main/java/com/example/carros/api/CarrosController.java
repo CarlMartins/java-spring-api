@@ -27,7 +27,7 @@ public class CarrosController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Optional<CarroDto>> get(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails user) {
+    public ResponseEntity<Optional<CarroDto>> get(@PathVariable("id") Long id) {
         Optional<CarroDto> carro = service.getCarroById(id);
 
         return ResponseEntity.ok(carro);
